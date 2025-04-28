@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Žužić"
+  given-names: "Lucija"
+  orcid: "https://orcid.org/0009-0007-6788-7522"
+- family-names: "Hržić"
+  given-names: "Franko"
+  orcid: "https://orcid.org/0000-0003-1513-0337"
+- family-names: "Petrijevčanin"
+  given-names: "Irena"
+  orcid: "https://orcid.org/0000-0002-3793-6852"
+- family-names: "Lerga"
+  given-names: "Jonatan"
+  orcid: "https://orcid.org/0000-0002-4058-8449"
+title: "Inflection Point-Based Trajectory Fingerprinting for Clustering and Anomaly Detection"
+version: v1.0
+doi: 10.5281/zenodo.15299191
+date-released: 2025-04-28
+url: "https://github.com/LucijaZuzic/PatternRecognitionInflectionPoints"
