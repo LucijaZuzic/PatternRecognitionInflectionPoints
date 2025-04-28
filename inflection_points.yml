@@ -1,0 +1,11 @@
+name: inflection_points
+channels:
+  - defaults
+dependencies:
+  - matplotlib
+  - numpy
+  - pandas
+  - pip
+  - pip:
+    - scikit_learn
+    - kneed
