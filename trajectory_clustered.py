@@ -330,7 +330,7 @@ if trajectories > 1:
 
     # TSNE for cluster illustrations
 
-    X_embedded = TSNE(n_components = 2, perplexity = 30, random_state = 42, init = "pca").fit_transform(X)
+    X_embedded = TSNE(n_components = 2, perplexity = min(30, trajectories), random_state = 42, init = "pca").fit_transform(X)
 
     if not os.path.isdir("results"):
         os.makedirs("results")
@@ -372,10 +372,10 @@ if trajectories > 1:
         # Finding the knee point
 
         time_now = time()
-        kneedle = kneed.KneeLocator([ix for ix in range(len(distances_subset))], distances_subset, curve = "concave", direction = "decreasing")
+        kneedle_knee = kneed.KneeLocator([ix for ix in range(len(distances_subset))], distances_subset, curve = "concave", direction = "decreasing")
         time_dict_clustering_DBSCAN["time"].append(time() - time_now)
         time_dict_clustering_DBSCAN["task"].append("knee_DBSCAN_neighbors_" + str(neighbors) + "_window_" + str(window))
-        knee_point = kneedle.knee
+        knee_point = kneedle_knee.knee
         knee_point_dist = distances_subset[knee_point]
         
         print("Knee discovery time:", time_dict_clustering_DBSCAN["time"][-1])
@@ -383,13 +383,29 @@ if trajectories > 1:
         # Finding the elbow point
 
         time_now = time()
-        kneedle = kneed.KneeLocator([ix for ix in range(len(distances_subset))], distances_subset, curve = "convex", direction = "increasing")
+        kneedle_elbow = kneed.KneeLocator([ix for ix in range(len(distances_subset))], distances_subset, curve = "convex", direction = "increasing")
         time_dict_clustering_DBSCAN["time"].append(time() - time_now)
         time_dict_clustering_DBSCAN["task"].append("elbow_DBSCAN_neighbors_" + str(neighbors) + "_window_" + str(window))
-        elbow_point = kneedle.elbow
+        elbow_point = kneedle_elbow.elbow
         elbow_point_dist = distances_subset[elbow_point]
         
         print("Elbow discovery time:", time_dict_clustering_DBSCAN["time"][-1])
+        
+        prepare_figure()
+        plt.title("Knee / elbow point detection\n(k-nn distances plot)\nneighbors: " + str(neighbors) + ", window: " + str(window))
+        plt.ylabel("Distances")
+        plt.plot(distances_subset, label = "k-nn distances", zorder = 3)
+        if knee_point_dist:
+            plt.scatter(knee_point, knee_point_dist, label = "knee", zorder = 3)
+        if elbow_point_dist:
+            plt.scatter(elbow_point, elbow_point_dist, label = "elbow", zorder = 3)
+        plt.legend()
+        if not os.path.isdir("plots/k-nn"):
+            os.makedirs("plots/k-nn")
+        plt.savefig("plots/k-nn/neighbors_" + str(neighbors) + "_window_" + str(window) + ".pdf", bbox_inches = "tight")
+        plt.savefig("plots/k-nn/neighbors_" + str(neighbors) + "_window_" + str(window) + ".svg", bbox_inches = "tight")
+        plt.savefig("plots/k-nn/neighbors_" + str(neighbors) + "_window_" + str(window) + ".png", bbox_inches = "tight")
+        plt.close()
 
         # DBSCAN using the knee point
 
