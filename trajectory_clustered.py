@@ -419,8 +419,8 @@ if trajectories > 1:
 
         if not os.path.isdir("results"):
             os.makedirs("results")
-        data_frame_time_clustering_DBSCAN = pd.DataFrame(time_dict_clustering_DBSCAN)
-        data_frame_time_clustering_DBSCAN.to_csv("results/value_clustering_DBSCAN_neighbors_" + str(neighbors) + "_window_" + str(ws) + ".csv", index = False)
+        data_frame_value_clustering_DBSCAN = pd.DataFrame(value_dict_clustering_DBSCAN)
+        data_frame_value_clustering_DBSCAN.to_csv("results/value_clustering_DBSCAN_neighbors_" + str(neighbors) + "_window_" + str(window) + ".csv", index = False)
 
         # DBSCAN using the knee point
 
