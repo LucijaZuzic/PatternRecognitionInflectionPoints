@@ -391,13 +391,23 @@ if trajectories > 1:
         
         print("Elbow discovery time:", time_dict_clustering_DBSCAN["time"][-1])
         
+        value_dict_clustering_DBSCAN = {"metric": [], "value": []}
+        
         prepare_figure()
         plt.title("Knee / elbow point detection\n(k-nn distances plot)\nneighbors: " + str(neighbors) + ", window: " + str(window))
         plt.ylabel("Distances")
         plt.plot(distances_subset, label = "k-nn distances", zorder = 3)
         if knee_point_dist:
+            value_dict_clustering_DBSCAN["metric"].append("knee_point")
+            value_dict_clustering_DBSCAN["value"].append(knee_point)
+            value_dict_clustering_DBSCAN["metric"].append("knee_point_dist")
+            value_dict_clustering_DBSCAN["value"].append(knee_point_dist)
             plt.scatter(knee_point, knee_point_dist, label = "knee", zorder = 3)
         if elbow_point_dist:
+            value_dict_clustering_DBSCAN["metric"].append("elbow_point")
+            value_dict_clustering_DBSCAN["value"].append(elbow_point)
+            value_dict_clustering_DBSCAN["metric"].append("elbow_point_dist")
+            value_dict_clustering_DBSCAN["value"].append(elbow_point_dist)
             plt.scatter(elbow_point, elbow_point_dist, label = "elbow", zorder = 3)
         plt.legend()
         if not os.path.isdir("plots/k-nn"):
@@ -407,6 +417,11 @@ if trajectories > 1:
         plt.savefig("plots/k-nn/neighbors_" + str(neighbors) + "_window_" + str(window) + ".png", bbox_inches = "tight")
         plt.close()
 
+        if not os.path.isdir("results"):
+            os.makedirs("results")
+        data_frame_time_clustering_DBSCAN = pd.DataFrame(time_dict_clustering_DBSCAN)
+        data_frame_time_clustering_DBSCAN.to_csv("results/value_clustering_DBSCAN_neighbors_" + str(neighbors) + "_window_" + str(ws) + ".csv", index = False)
+
         # DBSCAN using the knee point
 
         if knee_point_dist:
@@ -414,7 +429,7 @@ if trajectories > 1:
             time_now = time()
             DBSCAN_knee = DBSCAN(min_samples = neighbors, eps = knee_point_dist).fit(X)
             time_dict_clustering_DBSCAN["time"].append(time() - time_now)
-            time_dict_clustering_DBSCAN["task"].append("DBSCAN_knee_" + str(neighbors) + "_window_" + str(window))
+            time_dict_clustering_DBSCAN["task"].append("DBSCAN_knee_neighbours_" + str(neighbors) + "_window_" + str(window))
             list_labels_DBSCAN_knee = list(DBSCAN_knee.labels_)
 
             print("DBSCAN clustering time (knee):", time_dict_clustering_DBSCAN["time"][-1])
