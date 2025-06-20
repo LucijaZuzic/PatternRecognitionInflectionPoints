@@ -238,6 +238,7 @@ if trajectories > 1:
             coordinates_of_inflection = sorted(list(set(coordinates_of_inflection)))
             longitude_inflection = [longitudes[ix] for ix in coordinates_of_inflection]
             latitude_inflection = [latitudes[ix] for ix in coordinates_of_inflection]
+            plt.plot(longitudes, latitudes, color = "b", zorder = 2)
             plt.scatter(longitude_inflection, latitude_inflection, label = "Inflection points", color = "r", zorder = 3)
 
             plt.xlabel("Longitude")
