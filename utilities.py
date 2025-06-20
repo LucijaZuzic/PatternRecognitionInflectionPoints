@@ -2,7 +2,6 @@
 import pickle
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib import rc
 
 cm = 1 / 2.54  # centimeters in inches
 
@@ -10,7 +9,6 @@ cm = 1 / 2.54  # centimeters in inches
 
 def prepare_figure():
     plt.rcParams["svg.fonttype"] = "none"
-    rc('font',**{'family':'Arial'})
     
     SMALL_SIZE = 5
     MEDIUM_SIZE = 5
